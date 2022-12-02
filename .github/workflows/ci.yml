@@ -23,6 +23,12 @@ jobs:
       - name: Make archive
         run: tar -czvf apps.tar.gz build/f7-firmware-D/.extapps/*.fap
 
+      - name: Upload apps artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: apps
+          path: apps.tar.gz
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
