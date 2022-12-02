@@ -18,6 +18,9 @@ jobs:
       - name: 🔥 Build
         run: ./fbt
 
+      - name: Make archive
+        run: tar -czvf apps.tar.gz build/f7-firmware-D/.extapps/*.fap
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
