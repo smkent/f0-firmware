@@ -15,22 +15,20 @@ jobs:
       - name: 💾 Check out repository
         uses: actions/checkout@v3
 
-      - name: 🔥 Build
-        run: |
-          ./fbt
-          ./fbt fap_dist
+      - name: 🛠️ Set up toolchain and build firmware
+        run: ./fbt
 
-      - name: Make archive
-        run: tar -czvf apps.tar.gz build/f7-firmware-D/.extapps/*.fap
-
-      - name: Determine firmware API version
+      - name: 💭 Determine firmware API version
         run: |
           echo "FZ_API_VERSION=$(grep '^Version,' firmware/targets/f7/api_symbols.csv | cut -d, -f3)" >> "${GITHUB_ENV}"
 
-      - name: Upload apps artifact
+      - name: 🐬 Build applications
+        run: ./fbt fap_dist
+
+      - name: 📦 Package apps as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: apps-api-${FZ_API_VERSION}
+          name: apps-api-${{ env.FZ_API_VERSION }}
           path: build/f7-firmware-D/.extapps/*.fap
 
 concurrency:
