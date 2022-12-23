@@ -1,3 +1,5 @@
+import os
+
 from ansi.color import fg
 from fbt.appmanifest import (
     ApplicationsCGenerator,
@@ -27,6 +29,9 @@ def LoadAppManifest(env, entry):
 
         app_manifest_file_path = manifest_glob[0].rfile().abspath
         env["APPMGR"].load_manifest(app_manifest_file_path, entry)
+        env.Append(
+            LINT_SOURCES=[env.Dir(os.path.dirname(app_manifest_file_path))]
+        )
         env.Append(PY_LINT_SOURCES=[app_manifest_file_path])
     except FlipperManifestException as e:
         if not GetOption("silent"):
